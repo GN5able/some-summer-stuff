@@ -1,0 +1,100 @@
+	<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		html {
+			background-color: chartreuse;
+			box-sizing: border-box;
+			font-size: 18px;
+		}
+		body {
+			width: 100%;
+			height: 100%;
+			display: flex;
+			justify-content: space-around
+		}
+		form {
+			max-width: 300px;
+			display: flex;
+			flex-direction: column;
+			display:inline-block;
+		}
+		input {
+			margin: 0;
+			padding: 20px;
+     		border: 1px solid white;
+      		position: relative;
+      		top: 10px;
+      		z-index: 2;
+      		border-radius: 5px;
+      		font-size: 20px;
+		}
+		.autoComp {
+			margin: 0;
+      		padding: 0;
+      		position: relative;
+		}
+		li{
+			background: white;
+		    list-style: none;
+		    border-bottom: 1px solid #D8D8D8;
+		    margin: 0;
+		    padding: 20px;
+		    transition: background 0.2s;
+		}
+		.high {
+     		 background: #ffc600;
+    	}
+		
+	</style>
+</head>
+<body>
+	<form action="" class="formOne">
+		<input type="text" class="inpt">
+		<ul class="autoComp"></ul>
+	</form>
+	<form action="" class="formTwo">
+		<input type="text" class="inputTwo">
+		<ul class="autoComp"></ul>
+	</form>
+	<script>
+		const jasonFile = 'https://gist.githubusercontent.com/GN5able/0a60328a887f56d1efe58f6d86cea14c/raw/2c34e79e930f619f5ccd26068d256aeddee033c3/names.json';
+		const countries = [];
+		const searchInput = document.querySelector('.inpt');
+		const searchInputTwo = document.querySelector('.inputTwo');
+		
+		fetch(jasonFile).then(resp => resp.json()).then(data => {
+			for (let key in data) {
+				countries.push(data[key])
+			}
+		});
+		
+		function matching (searchWord, countries) {
+			return countries.filter(x => {
+				const regex = new RegExp(searchWord, 'gi');
+				return x.match(regex)
+			});
+		}
+		
+		function Display () {
+			const matchArray = matching(this.value, countries);
+			const html = matchArray.map(x => {
+				const regex = new RegExp(this.value, 'gi');
+				const name = x.replace(regex, `<span class="high">${this.value}</span>`) 
+				return `
+				<li><span>${name}</sspan></li>
+    		`;
+  			}).join('');
+			this.nextElementSibling.innerHTML = html;	
+		}
+		
+		searchInput.addEventListener('change', display);
+		searchInput.addEventListener('keyup', display);
+		searchInputTwo.addEventListener('change', display);
+		searchInputTwo.addEventListener('keyup', display);
+		
+	</script>
+</body>
+</html>
