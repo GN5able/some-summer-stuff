@@ -78,7 +78,7 @@
 			});
 		}
 		
-		function Display () {
+		function display () {
 			const matchArray = matching(this.value, countries);
 			const html = matchArray.map(x => {
 				const regex = new RegExp(this.value, 'gi');
